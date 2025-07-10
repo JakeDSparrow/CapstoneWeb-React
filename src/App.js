@@ -1,8 +1,8 @@
 import React from 'react';
-import Dispatcher from './pages/DispatcherDashboard/DispatcherPage';
+import AdminDashboard from './pages/AdminDashboard/AdminPage';
 
 function App() {
-  return <Dispatcher Page />;
+  return <AdminDashboard Page />;
 }
 
 export default App;
