@@ -7,17 +7,21 @@ function TeamOrganizerView({ teams, openTeamEditor }) {
       <div className="teams-container">
         {Object.entries(teams).map(([teamName, members]) => (
           <div key={teamName} className="team-card">
-            <h3>{teamName.charAt(0).toUpperCase() + teamName.slice(1)} Team</h3>
-            <ul>
+            <div className="team-card-header">
+              <h3>Team {teamName.charAt(0).toUpperCase() + teamName.slice(1)}</h3>
+              <button className="edit-button" onClick={() => openTeamEditor(teamName)}>
+                Edit Team
+              </button>
+            </div>
+            <div className="team-card-body">
               {members.length === 0 ? (
-                <li><em>No members</em></li>
+                <p className="no-members"><em>No members</em></p>
               ) : (
-                members.map((member, idx) => <li key={idx}>{member}</li>)
+                <ul>
+                  {members.map((member, idx) => <li key={idx}>{member}</li>)}
+                </ul>
               )}
-            </ul>
-            <button className="edit-button" onClick={() => openTeamEditor(teamName)}>
-              Edit Team
-            </button>
+            </div>
           </div>
         ))}
       </div>
@@ -25,4 +29,4 @@ function TeamOrganizerView({ teams, openTeamEditor }) {
   );
 }
 
-export default TeamOrganizerView; // Explicit default export
+export default TeamOrganizerView;

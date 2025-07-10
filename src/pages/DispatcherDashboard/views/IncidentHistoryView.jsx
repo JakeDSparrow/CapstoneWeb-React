@@ -1,39 +1,66 @@
 import React from 'react';
+import { emergencyTypeMap, statusMap } from '../../../constants/emergencyTypes';
 
 export default function IncidentHistoryView({ reportLogs }) {
-  const completedLogs = reportLogs.filter(log => log.status === 'completed');
-
   return (
-    <div className="content-view" id="incident-history-view">
+    <div className="card">
       <h2>Incident History</h2>
-      {completedLogs.length === 0 ? (
-        <p>No completed incidents yet.</p>
-      ) : (
-        <table className="incident-history-table">
+      <div className="table-container">
+        <table className="log-table">
           <thead>
             <tr>
               <th>Report ID</th>
               <th>Reporter</th>
-              <th>Type</th>
               <th>Location</th>
-              <th>Response Team</th>
-              <th>Resolved On</th>
+              <th>Emergency Type</th>
+              <th>Responding Team</th>
+              <th>Status</th>
+              <th>Timestamp</th>
             </tr>
           </thead>
           <tbody>
-            {completedLogs.map(log => (
-              <tr key={log.id}>
-                <td>{log.id}</td>
-                <td>{log.reporter}</td>
-                <td>{log.emergencyType}</td>
-                <td>{log.location}</td>
-                <td>{log.respondingTeam}</td>
-                <td>{new Date(log.timestamp).toLocaleString('en-PH')}</td>
+            {reportLogs.length === 0 ? (
+              <tr className="empty-row">
+                <td colSpan="7">
+                  <div className="empty-state">
+                    <i className="fas fa-history"></i>
+                    <p>No incident records yet</p>
+                  </div>
+                </td>
               </tr>
-            ))}
+            ) : (
+              reportLogs.map((log) => (
+                <tr key={log.id}>
+                  <td>{log.id}</td>
+                  <td>{log.reporter}</td>
+                  <td>{log.location}</td>
+                  <td>
+                    <span className="emergency-tag" style={{ 
+                      backgroundColor: emergencyTypeMap[log.emergencyType]?.color || '#ccc'
+                    }}>
+                      {emergencyTypeMap[log.emergencyType]?.label || log.emergencyType}
+                    </span>
+                  </td>
+                  <td>{log.respondingTeam}</td>
+                  <td>
+                    <span className="status-badge" style={{
+                      backgroundColor: statusMap[log.status]?.color || '#ccc'
+                    }}>
+                      {statusMap[log.status]?.label || log.status}
+                    </span>
+                  </td>
+                  <td>
+                    {new Date(log.timestamp).toLocaleString('en-PH', {
+                      dateStyle: 'medium',
+                      timeStyle: 'short'
+                    })}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
-      )}
+      </div>
     </div>
   );
 }

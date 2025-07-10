@@ -7,24 +7,8 @@ import IncidentHistoryView from './views/IncidentHistoryView';
 import './Dispatcher.css';
 import Logo from '../../assets/GoRescueLogo.webp';
 import L from 'leaflet';
+import { emergencyTypes,emergencyTypeMap,statusMap } from '../../constants/emergencyTypes';
 
-const emergencyTypes = {
-  medical: { icon: 'fa-plus-square', color: '#e74c3c', label: 'Medical Assistance', responseTeam: 'Medical Team' },
-  natural: { icon: 'fa-cloud-showers-heavy', color: '#3498db', label: 'Natural Disaster', responseTeam: 'Rescue Team' },
-  accident: { icon: 'fa-car-crash', color: '#f39c12', label: 'Road Accident', responseTeam: 'Accident Response Team' }
-};
-
-const emergencyTypeMap = {
-  medical: { icon: 'fa-plus-square', color: '#e74c3c', label: 'Medical Emergency' },
-  accident: { icon: 'fa-car-crash', color: '#f39c12', label: 'Road Accident' },
-  natural: { icon: 'fa-water', color: '#2980b9', label: 'Natural Disaster' }
-};
-
-const statusMap = {
-  pending: { color: '#f39c12', label: 'Pending' },
-  'in-progress': { color: '#3498db', label: 'In Progress' },
-  completed: { color: '#2ecc71', label: 'Completed' }
-};
 
 export default function DispatcherPage() {
   const [activeView, setActiveView] = useState('map-view');
@@ -175,12 +159,12 @@ export default function DispatcherPage() {
 
       <div className="main-content">
         {activeView === 'map-view' && (
-          <div className="content-view active" id="map-view">
+          <div className="content-view active" style={{ display: 'flex', flexDirection: 'column' }} id="map-view">
             <LiveMapView />
           </div>
         )}
         {activeView === 'notifications-view' && (
-          <div className="content-view" id="notifications-view">
+          <div className="content-view" style={{ display: 'flex', flexDirection: 'column' }} id="notifications-view">
             <NotificationsView
               notifications={notifications}
               dispatchTeam={dispatchTeam}
@@ -190,18 +174,27 @@ export default function DispatcherPage() {
           </div>
         )}
         {activeView === 'report-logs-view' && (
-          <div className="content-view" id="report-logs-view">
-            <ReportLogsView reportLogs={reportLogs} formatDateTime={formatDateTime} />
+          <div className="content-view active" style={{ display: 'flex', flexDirection: 'column' }} id="report-logs-view">
+            <ReportLogsView 
+              reportLogs={reportLogs} 
+              formatDateTime={formatDateTime}
+              emergencyTypeMap={emergencyTypeMap}
+              statusMap={statusMap}
+            />  
           </div>
         )}
         {activeView === 'team-organizer-view' && (
-          <div className="content-view" id="team-organizer-view">
+          <div className="content-view" style={{ display: 'flex', flexDirection: 'column' }} id="team-organizer-view">
             <TeamOrganizerView teams={teams} openTeamEditor={openTeamEditor} />
           </div>
         )}
         {activeView === 'incident-history-view' && (
-          <div className="content-view" id="incident-history-view">
-              <IncidentHistoryView reportLogs={reportLogs} />
+          <div className="content-view active" style={{ display: 'flex', flexDirection: 'column' }} id="incident-history-view">
+            <IncidentHistoryView 
+              reportLogs={reportLogs}
+              emergencyTypeMap={emergencyTypeMap}
+              statusMap={statusMap}
+            />
           </div>
         )}
       </div>
